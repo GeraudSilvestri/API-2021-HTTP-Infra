@@ -20,3 +20,37 @@ Remappant le port 7070 de la machine physique sur le port 80 de notre conteneur 
 Au lancement du conteneur, on copie les fichiers du dossier src dans le dossier /var/www/html. Le dossier src contenant tout les fichiers nécessaires à la mise en place de notre site.
 
 Pour accéder au site, il suffit de chercher "localhost:7070" sur le navigateur internet.
+
+## Etape 2 : Mise en place de Node.js
+Image utilisée : node:16.13.1
+
+Après avoir créer le dockerfile, il faut créer le contenu dynamic. Premièrement il faut installer npm via la commande :
+
+```bash
+wsl sudo apt install npm
+```
+
+Ensuite il faut initialiser npm via la commande :
+```bash
+npm init
+```
+
+Une série d'informations est ensuite demandée
+
+![npmInit](Images/npmInit.jpg)
+
+Les paramètres "test command", "git repository" et "keywords" ne sont pas utilisés. Pour "entry point" et "license", les valeurs par défaut sont gardées.
+
+Suite à l'initialisation de npm, nous avons ajouter le module "[Chance.js](https://chancejs.com)". Après avoir crée un programme simple affichant des noms aléatoires (voir ledit programme ci-dessous), on peut en tester le fonctionnement en utilisant la commande :
+```bash
+node index.js
+```
+Code d'index.js
+```js
+var Chance = require('chance');
+var chance = new Chance();
+
+console.log("Bonjour " + chance.name());
+```
+
+Pour finir, une image docker est crée (voir étape 1) et nous pouvons lancer le programme via docker run.
