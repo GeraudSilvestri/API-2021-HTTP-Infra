@@ -54,3 +54,11 @@ console.log("Bonjour " + chance.name());
 ```
 
 Pour finir, une image docker est crée (voir étape 1) et nous pouvons lancer le programme via docker run.
+
+## Etape 2 : Récupération de requêtes http avec node.js
+
+Dans un premier temps, le module express a été installé afin de récupérer les requêtes http rentrantes.
+
+Nous utilisons ce module dans notre application dans le but de pouvoir écouter sur le port 3000 et communiquer en utilisant le protocole http. Dès lors qu'une requête GET est récupérée, nous vérifions ce que la requête demande et effectuons un traitement adapté nigaga.
+
+Il est possible d'accéder à l'application depuis un navigateur en utilisant l'adresse et le port 3000 de l'host docker étant donné que docker va mapper notre requête avec le bon conteneur.
