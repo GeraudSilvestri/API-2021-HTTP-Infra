@@ -7,7 +7,7 @@ Pour lancer le conteneur, la commande suivante doit être utilisée:
 ```bash
 docker build -t apache-php/static .
 ```
-"apache-php/static" étant le nom du conteneur et le . disant qu'on le build à la racine.
+"apache-php/static" étant le nom du conteneur et le . se situant après indique que les fichiers manipulés par le dockerFile se trouvent dans le même répértoire que celui-ci.
 
 Ensuite pour lancer le docker, il faut utiliser :
 
