@@ -62,3 +62,17 @@ Dans un premier temps, le module express a été installé afin de récupérer l
 Nous utilisons ce module dans notre application dans le but de pouvoir écouter sur le port 3000 et communiquer en utilisant le protocole http. Dès lors qu'une requête GET est récupérée, nous vérifions ce que la requête demande et effectuons un traitement adapté nigaga.
 
 Il est possible d'accéder à l'application depuis un navigateur en utilisant l'adresse et le port 3000 de l'host docker étant donné que docker va mapper notre requête avec le bon conteneur.
+
+## Etape 3 : Mise en place du reverse proxy
+
+## Etape 4 : Ajout d'un script effectuant des requêtes ajax
+
+Les images des différents containers docker ont été mises à jour pour y installer vim afin de modifier facilement les différents fichiers js et html.
+
+Un script js a ensuite été créé sur le container gérant le contenu statique afin de récupérer les informations dynamiquement crées par le container express. Cette opération fonctionne grâce au reverse proxy car ...
+
+Pour pouvoir utiliser ce script, la bibliothèque jquery est récupéré depuis un CDN (le template bootstrap choisi ne l'implémente pas directement).
+
+Finalement, un système de requêtes ajax s'effectuant périodiquement a été mis en place pour rafraichir les informations chaque x secondes.
+
+Les modifications citées ci-dessus en d'abord été effectuées en live sur le container, puis ont été automatisées en modifiant la configuration du container.
