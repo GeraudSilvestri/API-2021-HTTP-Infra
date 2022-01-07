@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  web_static:
+    build: docker-images/apache-php-image/.
+  web_dynamic:
+    build: docker-images/express-image/.
+  reverse_proxy:
+    build: docker-images/apache-reverse-proxy/.
+    ports:
+      - "8080:80"
