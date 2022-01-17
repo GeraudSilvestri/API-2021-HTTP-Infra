@@ -9,4 +9,6 @@ COPY src /opt/app
 
 run npm install
 
+expose 3000
+
 CMD ["node", "/opt/app/index.js"]
