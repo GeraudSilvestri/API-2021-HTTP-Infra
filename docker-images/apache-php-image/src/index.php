@@ -35,6 +35,12 @@
             <div class="container px-4 px-lg-5 text-center">
                 <h1 class="mb-1 custom-content">Stylish Portfolio</h1>
                 <h3 class="mb-5"><em>Hostname : <?php print gethostname(); ?></em></h3>
+                <?php
+                if (isset($_COOKIE["hostName"])){
+                    echo "It's been a while my man. It's me : ";
+                    echo $_COOKIE["hostName"];
+                }
+                ?>
                 <a class="btn btn-primary btn-xl" href="#about">Find Out More</a>
             </div>
         </header>
