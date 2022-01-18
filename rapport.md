@@ -130,4 +130,4 @@ Arrêt de web_static_1.
 ![](Images/last-scr3.png)
 
 Malgrés le sticky session, Traefik remarque que le container n'est plus disponible et en fourni un autre.
-![X](Images/last-scr4.png)
+![](Images/last-scr4.PNG)
