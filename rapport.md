@@ -94,6 +94,16 @@ Le load balancing est maintenant fonctionnel, Traefik l'implémente par défaut.
 
 Pour tester cette fonctionnalité, il faut lancer plusieurs containers de web_static afin que ceux-ci se partagent la charge. Cette maneuvre est effectuée via la commande : docker-compose up -d --scale web_static=<nombre de container souhaité>
 
+### Validation
+
+Affichage du hostame du container web_static utilisé
+![](Images/scr1-lb.png)
+
+Après quelques rafraîchissements de pages :
+![](Images/scr2-lb.png)
+
+On remarque via le hostname que le host a changé.
+
 ## Etape 7 : Sticky session
 Pour ajouter cette fonctionnalité, il suffit juste d'indiquer certaines options liées à Traefik à notre service web_static.
 Options qui sont :
@@ -102,6 +112,22 @@ Options qui sont :
 
 Après la mise en place de ces lignes, un cookie hostName sera fourni au client pour que celui-ci l'envoi dans ses futurs requêtes. Traefik va ensuite identifier le container correspondant et lui transmettre la requête.
 
+### Validation
+Même après plusieurs rafraîchissements, le hostname reste identique. Le client est maintenant lié à un container web_static en particulier. J'affiche également le contenu du cookie.
+![](Images/scr-ss.png)
+
 ## Etape 8 : Dynamic cluster management
 Grâce à Docker compose et de l'outil Traefik, la gestion dynamique du cluster de container est automatiquement géré. Lorsqu'un serveur apache statique disparait du cluster, les utilisateurs qui étaient liés auparavant par le cookie servant de sticky session au-dit container sont géré par un des autres containers disponibles.
 
+### Validation
+Affichage du hostname actuellement utilisé.
+![](Images/last-scr1.png)
+
+On remarque via les logs que le container utilisé est web_static_1.
+![](Images/last-scr2.png)
+
+Arrêt de web_static_1.
+![](Images/last-scr3.png)
+
+Malgrés le sticky session, Traefik remarque que le container n'est plus disponible et en fourni un autre.
+![](Images/last-scr4.png)
