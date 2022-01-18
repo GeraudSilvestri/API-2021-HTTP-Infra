@@ -97,10 +97,10 @@ Pour tester cette fonctionnalité, il faut lancer plusieurs containers de web_st
 ### Validation
 
 Affichage du hostame du container web_static utilisé
-![](Images/scr1-lb.png)
+![](Images/scr1-lb.PNG)
 
 Après quelques rafraîchissements de pages :
-![](Images/scr2-lb.png)
+![](Images/scr2-lb.PNG)
 
 On remarque via le hostname que le host a changé.
 
@@ -114,20 +114,20 @@ Après la mise en place de ces lignes, un cookie hostName sera fourni au client 
 
 ### Validation
 Même après plusieurs rafraîchissements, le hostname reste identique. Le client est maintenant lié à un container web_static en particulier. J'affiche également le contenu du cookie.
-![](Images/scr-ss.png)
+![](Images/scr-ss.PNG)
 
 ## Etape 8 : Dynamic cluster management
 Grâce à Docker compose et de l'outil Traefik, la gestion dynamique du cluster de container est automatiquement géré. Lorsqu'un serveur apache statique disparait du cluster, les utilisateurs qui étaient liés auparavant par le cookie servant de sticky session au-dit container sont géré par un des autres containers disponibles.
 
 ### Validation
 Affichage du hostname actuellement utilisé.
-![](Images/last-scr1.png)
+![](Images/last-scr1.PNG)
 
 On remarque via les logs que le container utilisé est web_static_1.
-![](Images/last-scr2.png)
+![](Images/last-scr2.PNG)
 
 Arrêt de web_static_1.
-![](Images/last-scr3.png)
+![](Images/last-scr3.PNG)
 
 Malgrés le sticky session, Traefik remarque que le container n'est plus disponible et en fourni un autre.
 ![](Images/last-scr4.PNG)
