@@ -57,8 +57,31 @@ Les modifications citées ci-dessus en d'abord été effectuées en live sur le 
 ## Etape 5 : Reverse proxy dynamique
 
 ### Utilisation de Docker Compose
-Sur windows, Docker Compose est insallé en même temps que Docker.
+Sur windows, Docker Compose est installé directement avec Docker. Docker compose s'occupe de gérer nos différents containers à notre place. Pour le mettre en place dans notre infrastructure, il a juste été nécessaire de créer un ficher docker-compose.yml contenant sa version ainsi qu'une liste des différents "services" disponibles dans notre environnement. On fournit, pour chaque service, le Dockerfile correspondant au container souhaité. En sachant que chaque service représente un certain type de container docker, les différents services implémentés dans notre fichier de configuration docker compose sont un serveur web static, un serveur web dynamique et un reverse-proxy Apache. 
 
-Le système de reverse proxy avec compose est très facile à implémenter. Il a juste été nécessaire de créer un ficher docker-compose.yml contenant sa version ainsi que ses différents "services". Chaque service représente un container docker, ainsi il est possible de fournir ces noms de services au lieu d'adresses ip statiques dans le virtual host 001-reverse-proxy.conf
+Ainsi, il est possible de récupérer dynamiquement certaines informations des containers via leur service correspondant comme par exemple l'adresse ip locale du container.  Ainsi, il nous a été possible de fournir les noms des services web_static et web_dynamique au lieu de leur adresse ip statique dans le virtual host 001-reverse-proxy.conf du reverse proxy.
 
-L'ensemble des containers peuvent être build et run tous ensemble via la commande docker-compose up. Il est maintenant possible d'executer notre application en négligeant l'adresse ip local fournie aux containers.
+L'ensemble des containers peuvent être build et run via la commande docker-compose up/build.
+
+Il est maintenant possible d'executer notre application sans avoir à se soucier des adresses ip utilisées.
+
+## Etape 6 : Load balancing
+Pour mettre en place un système de load balancing, nous avons utilisé l'outil Traefik disponible avec docker compose.
+
+L'image maison reverse proxy est retirée au profit de l'image officielle Traefik ce qui signifit que désormais nous laissons à Traefik la gestion du routage des requêtes au sein de notre infrastructure.
+
+Il faut lui indiquer le provider utilisé (docker dans notre cas). Nous avons aussi mis à disposition un dashBoard permettant de monitorer nos containers sur le port 8282. 
+On indique également le port mapping pour le container Traefik étant donné que désormais c'est lui qui sert de goulet d'étranglement entre nos serveurs et l'extérieur.
+
+Pour le container web_static et web_dynamic, il est indiqué qu'ils sont éligibles pour Traefik et nous appliquons au container Traefik une règle de routage permettant de transmettre les requêtes accédant à l'host test-reverse-proxy:8080 sur web_static et test-reverse-proxy:8080/animals sur web_dynamic.
+
+Pour le routage de web_dynamic cependant, il y a une spécificité. Nous avons indiqué à express d'accepter les requêtes get sans prefixe de page. Hors par défaut, Traefik redirige les requêtes sans retoucher leur contenu et dans notre cas le '/animals' pose problème. Grâce à des options (notamment les middlewares) nous avons pu retirer ce /animals de la requête lorsque Traefik la redirige vers web_dynamic.
+
+Le load balancing est maintenant fonctionnel, Traefik l'implémente par défaut.
+
+Pour tester cette fonctionnalité, il faut lancer plusieurs containers de web_static afin que ceux-ci se partagent la charge. Cette maneuvre est effectuée via la commande : docker-compose up -d --scale web_static=<nombre de container souhaité>
+
+## Etape 7 : Sticky session
+Pour ajouter cette fonctionnalité, il faut juste indiquer des options à Traefik.
+
+tester docker-compose scale web=2 worker=3
